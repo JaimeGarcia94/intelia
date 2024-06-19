@@ -1,0 +1,55 @@
+version: '3.5'
+
+services:
+    php:
+        build:
+            context: .
+            dockerfile: docker/php/Dockerfile
+            args:
+                TIMEZONE: ${TIMEZONE}
+        container_name: intelia_php
+        volumes:
+            - .:/var/www/intelia/
+        networks:
+            - symfony
+    nginx:
+        build:
+            context: .
+            dockerfile: docker/nginx/Dockerfile
+        container_name: intelia_nginx
+        volumes:
+            - .:/var/www/intelia/
+        ports:
+            - 80:80
+        networks:
+            - symfony
+    db:
+        build:
+            context: .
+            dockerfile: docker/db/Dockerfile
+        container_name: intelia_db
+        volumes:
+            - ./docker/db/data:/var/lib/mysql
+        environment:
+            MYSQL_ROOT_PASSWORD: 'root'
+            MYSQL_USER: ${MYSQL_USER}
+            MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+            MYSQL_DATABASE: ${MYSQL_DATABASE}
+        ports:
+            - 3306:3306
+        networks:
+            - symfony
+    rabbitmq:
+        image: rabbitmq:3-management
+        container_name: intelia_rabbitmq
+        ports:
+            - "5672:5672"
+            - "15672:15672"
+        environment:
+            RABBITMQ_DEFAULT_USER: guest
+            RABBITMQ_DEFAULT_PASS: guest
+        networks:
+            - symfony
+            
+networks:
+    symfony:
