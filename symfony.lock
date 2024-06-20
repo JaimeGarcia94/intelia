@@ -26,6 +26,15 @@
             "migrations/.gitignore"
         ]
     },
+    "enqueue/amqp-bunny": {
+        "version": "0.10",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "main",
+            "version": "0.7",
+            "ref": "fa1a9a0c5ad7a58ced6401f2b9d66d6078679715"
+        }
+    },
     "symfony/console": {
         "version": "6.4",
         "recipe": {

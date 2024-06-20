@@ -11,14 +11,18 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Doctrine\ORM\EntityManagerInterface;
 use DateTime;
 use App\Entity\Image;
+use App\Message\ProcessImageMessage;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 class ImageController extends AbstractController
 {
     private $em;
+    private $bus;
 
-    public function __construct(EntityManagerInterface $em)
+    public function __construct(EntityManagerInterface $em, MessageBusInterface $bus)
     {
         $this->em = $em;
+        $this->bus = $bus;
     }
 
     #[Route('/image', name: 'app_image')]
@@ -65,6 +69,9 @@ class ImageController extends AbstractController
         $image->setModifiedAt(null);
         $this->em->persist($image);
         $this->em->flush();
+
+        // Enviar el mensaje para procesar la imagen
+        $this->bus->dispatch(new ProcessImageMessage($image->getId()));
 
         return new Response('File successfully uploaded.', Response::HTTP_OK);
     }
