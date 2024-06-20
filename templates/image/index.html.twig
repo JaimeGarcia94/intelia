@@ -9,12 +9,16 @@
 </style>
 
 <div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+    <h1>Bienvenido: {{app.user.email}}</h1>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>C:/xampp/htdocs/appIntelia/intelia/src/Controller/ImageController.php</code></li>
-        <li>Your template at <code>C:/xampp/htdocs/appIntelia/intelia/templates/image/index.html.twig</code></li>
-    </ul>
+    <h5>Sube tu imagen</h5>
+    <h6>Solo puedes subir imagenes con las siguientes extensiones: .jpg, .jpeg, .png</h6>
+    <form action="{{path('app_upload_image')}}" method="post" enctype="multipart/form-data">
+        {# <input type="file" id="file-upload" name="file-upload" accept=".jpg, .jpeg, .png"> #}
+        <input type="file" id="file-upload" name="file-upload">
+        <br>
+        <input type="submit" value="Upload">
+    </form>
+
 </div>
 {% endblock %}
