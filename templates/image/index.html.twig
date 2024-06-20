@@ -20,5 +20,30 @@
         <input type="submit" value="Upload">
     </form>
 
+
+    <h4>Listado</h4>
+    <table style="border: 1px solid black">
+        <thead>
+            <tr>
+                <th>Nombre archivo</th>
+                <th>Status</th>
+                <th>Descargar</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for image in images %}
+                <tr>
+                    <td>{{ image.fileName }}</td>
+                    <td>{{ image.status }}</td>
+                    {% if image.status == 'Pending' %}
+                    <td>{{'-'}}</td>
+                    {% else %}
+                    <td><a href="{{ path('app_image_download', {'filename': image.fileName}) }}">Descargar</a></td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
 </div>
 {% endblock %}

@@ -13,6 +13,8 @@ use DateTime;
 use App\Entity\Image;
 use App\Message\ProcessImageMessage;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 class ImageController extends AbstractController
 {
@@ -28,8 +30,11 @@ class ImageController extends AbstractController
     #[Route('/image', name: 'app_image')]
     public function index(): Response
     {
+        $user = $this->getUser();
+        $images = $this->em->getRepository(Image::class)->findByImages($user);
+
         return $this->render('image/index.html.twig', [
-            'controller_name' => 'ImageController',
+            'images' => $images,
         ]);
     }
 
@@ -73,6 +78,23 @@ class ImageController extends AbstractController
         // Enviar el mensaje para procesar la imagen
         $this->bus->dispatch(new ProcessImageMessage($image->getId()));
 
-        return new Response('File successfully uploaded.', Response::HTTP_OK);
+        return $this->render('image/index.html.twig');
+        // return new Response('File successfully uploaded.', Response::HTTP_OK);
+    }
+
+    #[Route('/download', name: 'app_image_download')]
+    public function download(Request $request): Response
+    {
+        $filename = $request->query->get('filename');
+        $filePath = $this->getParameter('upload_directory') . '/' . $filename;
+
+        if (!file_exists($filePath)) {
+            throw $this->createNotFoundException('The file does not exist');
+        }
+
+        $response = new BinaryFileResponse($filePath);
+        $response->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT, $filename);
+
+        return $response;
     }
 }
