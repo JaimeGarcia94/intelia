@@ -1,4 +1,4 @@
-Este repositorio permite a los usuarios subir imágenes para ser procesadas en segundo plano, aplicándoles un filtro de escala de grises con una tarea que se ejecuta de manera asíncrona usando RabbutMQ.
+Este repositorio permite a los usuarios subir imágenes para ser procesadas en segundo plano, aplicándoles un filtro de escala de grises con una tarea que se ejecuta de manera asíncrona usando RabbitMQ.
 
 <h1>Infraestructura usada</h1>
 <ul>
