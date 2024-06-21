@@ -21,7 +21,7 @@ class UserController extends AbstractController
         $this->em = $em;
     }
 
-    #[Route('/registration', name: 'user_registration')]
+    #[Route('/registration', name: 'app_user_registration')]
     public function indexRegistration()
     {
         $msg = '';

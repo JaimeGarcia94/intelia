@@ -1,40 +1,30 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-
-<div class="container h-100">
-    <div class="d-flex justify-content-center h-100">
-        <div class="login_card">
-            <div class="d-flex justify-content-center">
-                <form action="{{ path('save_registration') }}" method="post">
-                    {% if msg %}
-                        <div class="alert alert-danger text-wrap" role="alert" style="font-size:13px">
-                        {{ msg }}
-                        </div>
-                    {% endif %}
-                    <div class="input-group mb-3">
-                        <div class="input-group-append">
-                            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
-                        </div>
-                        <input type="email" id="email" name="_username" class="form-control input_user" placeholder="Email" required>
-                    </div>
-                    <div class="input-group mb-3">
-                        <div class="input-group-append">
-                            <span class="input-group-text"><i class="fas fa-key"></i></span>
-                        </div>
-                        <input type="password" name="_password" class="form-control input_pass" placeholder="Contraseña" required="required">
-                    </div>
-                    
-                    <div class="d-flex justify-content-center mt-3 login_container">
-                        <button type="submit" name="button" class="btn login_btn">Regístrate</button>
-                    </div>
-                    <div class="d-flex justify-content-center mt-3 login_container">
-                        <a href="{{ path('backLogin') }}" type="button" name="button" class="btn login_btn">Volver</a>
-                    </div>
-                </form>
-            </div>
+<style>
+    .container { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+</style>
+<div class="container">
+    <h1>Registrate</h1>
+    <form action="{{ path('save_registration') }}" method="post">
+        {% if msg %}
+            <span class="" style="font-size:13px">
+            {{ msg }}
+            </span>
+        {% endif %}
+        <div>
+            <input type="email" id="email" name="_username" placeholder="Email" required>
         </div>
-    </div>
+        <div>
+            <input type="password" name="_password" placeholder="Contraseña" required="required">
+        </div>
+        
+        <div>
+            <button type="submit" name="button">Regístrate</button>
+        </div>
+        <div>
+            <a href="{{ path('backLogin') }}" type="button" name="button">Volver</a>
+        </div>
+    </form>
 </div>
-
 {% endblock %}
