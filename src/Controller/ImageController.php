@@ -80,7 +80,7 @@ class ImageController extends AbstractController
         return $this->redirectToRoute('app_image');
     }
 
-    #[Route('/download', name: 'app_image_download')]
+    #[Route('/download', name: 'app_image_download', methods: ['GET'])]
     public function download(Request $request): Response
     {
         $filename = $request->query->get('filename');
