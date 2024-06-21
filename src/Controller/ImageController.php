@@ -8,13 +8,13 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Doctrine\ORM\EntityManagerInterface;
 use DateTime;
 use App\Entity\Image;
 use App\Message\ProcessImageMessage;
-use Symfony\Component\Messenger\MessageBusInterface;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
-use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 class ImageController extends AbstractController
 {
@@ -27,7 +27,7 @@ class ImageController extends AbstractController
         $this->bus = $bus;
     }
 
-    #[Route('/image', name: 'app_image')]
+    #[Route('/image', name: 'app_image', methods: ['GET'])]
     public function index(): Response
     {
         $user = $this->getUser();
@@ -38,7 +38,7 @@ class ImageController extends AbstractController
         ]);
     }
 
-    #[Route('/upload', name: 'app_upload_image')]
+    #[Route('/upload', name: 'app_upload_image', methods: ['POST'])]
     public function upload(Request $request): Response
     {
         $user = $this->getUser();
@@ -75,11 +75,9 @@ class ImageController extends AbstractController
         $this->em->persist($image);
         $this->em->flush();
 
-        // Enviar el mensaje para procesar la imagen
         $this->bus->dispatch(new ProcessImageMessage($image->getId()));
 
-        return $this->render('image/index.html.twig');
-        // return new Response('File successfully uploaded.', Response::HTTP_OK);
+        return $this->redirectToRoute('app_image');
     }
 
     #[Route('/download', name: 'app_image_download')]

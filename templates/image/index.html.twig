@@ -4,29 +4,29 @@
 
 {% block body %}
 <style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+    .container { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    table, th, td {
+        border: 1px solid black;
+        border-collapse: collapse;
+    }
 </style>
 
-<div class="example-wrapper">
+<div class="container">
     <h1>Bienvenido: {{app.user.email}}</h1>
-
     <h5>Sube tu imagen</h5>
     <h6>Solo puedes subir imagenes con las siguientes extensiones: .jpg, .jpeg, .png</h6>
     <form action="{{path('app_upload_image')}}" method="post" enctype="multipart/form-data">
-        {# <input type="file" id="file-upload" name="file-upload" accept=".jpg, .jpeg, .png"> #}
         <input type="file" id="file-upload" name="file-upload">
         <br>
         <input type="submit" value="Upload">
     </form>
 
-
     <h4>Listado</h4>
-    <table style="border: 1px solid black">
+    <table>
         <thead>
             <tr>
                 <th>Nombre archivo</th>
-                <th>Status</th>
+                <th>Estado</th>
                 <th>Descargar</th>
             </tr>
         </thead>
@@ -34,11 +34,11 @@
             {% for image in images %}
                 <tr>
                     <td>{{ image.fileName }}</td>
-                    <td>{{ image.status }}</td>
+                    <td style="text-align: center;">{{ image.status }}</td>
                     {% if image.status == 'Pending' %}
-                    <td>{{'-'}}</td>
+                    <td style="text-align: center;">{{'-'}}</td>
                     {% else %}
-                    <td><a href="{{ path('app_image_download', {'filename': image.fileName}) }}">Descargar</a></td>
+                    <td style="text-align: center;"><a href="{{ path('app_image_download', {'filename': image.fileName}) }}">Descargar</a></td>
                     {% endif %}
                 </tr>
             {% endfor %}
