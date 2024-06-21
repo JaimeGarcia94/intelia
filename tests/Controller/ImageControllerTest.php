@@ -13,7 +13,7 @@ class ImageControllerTest extends WebTestCase
     public function testIndex()
     {
         $client = static::createClient();
-        $crawler = $client->request('GET', '/image');
+        $client->request('GET', '/image');
 
         $this->assertSelectorTextContains('h5', 'Sube tu imagen');
         $this->assertSelectorTextContains('h6', 'Solo puedes subir imagenes con las siguientes extensiones: .jpg, .jpeg, .png');
